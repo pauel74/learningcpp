@@ -1,5 +1,6 @@
 #include <iostream>
 #include <random>
+#include <cstdlib>
 #include <ctime>
 #include <vector>
 using namespace std;
@@ -22,7 +23,7 @@ void drawMaze(vector<vector<int>> grid) {
                 cout << "\033[34m";
             }
             else if(currentField == 2) {
-                cout << "\033[36m";
+                cout << "\033[34m";
             }
             cout << "██";
         }
@@ -38,8 +39,10 @@ vector<vector<int>> generateMaze(int width, int height) {
 
     int x = 0;
     int y = 0;
-    int maxsteps = (width+height)*5;
+    int maxsteps = (width+height)*15;
+    int minimumsteps = (width+height)*2;
     int step = maxsteps+1;
+    int blocksMoved = 0;
     int generated = 0;
 
     while(step > maxsteps) {
@@ -49,6 +52,7 @@ vector<vector<int>> generateMaze(int width, int height) {
         x = 0;
         y = 0;
         step = 0;
+        blocksMoved = 0;
 
         for(int i = 0; i<height; i++) {
             grid.push_back(vector<int>()); // () creates a new empty vector object
@@ -59,6 +63,7 @@ vector<vector<int>> generateMaze(int width, int height) {
                     grid[i][j] = 2;
                 }
             }
+            grid[0][0] = 0;
         }
 
         while(x != width-1 || y != height-1) {
@@ -83,22 +88,32 @@ vector<vector<int>> generateMaze(int width, int height) {
             if(grid[y][x] != 0 && grid[y][x] != 2) {
                 
                 grid[y][x] = 0;
+                blocksMoved++;
             }
             else {
                 x = xtemp;
                 y = ytemp;
             }
             step++;
-            if(step>maxsteps) {
+            if(step>maxsteps) { // prevent getting stuck
                 break;
             }
+            if(x == width-1 && y == height-1) {
+                if(blocksMoved<minimumsteps) {
+                    step = maxsteps+1;
+                    break;
+                }
+            }   
         }
         generated++;
     }
     cout << "generated " << generated << " mazes" << endl;
+    cout << "steps:" << step << "\nblocks moved: " << blocksMoved <<"\nmin steps: " << minimumsteps << "\nmax steps: " << maxsteps << endl;
     return grid;
 }
 
 int main() {
-    drawMaze(generateMaze(21,15));
+    system("clear");
+    cout << "generating..." << endl;
+    drawMaze(generateMaze(25,19));
 }
