@@ -21,11 +21,14 @@ void drawMaze(vector<vector<int>> grid) {
             else if(currentField == 1) {
                 cout << "\033[34m";
             }
+            else if(currentField == 2) {
+                cout << "\033[36m";
+            }
             cout << "██";
         }
         cout << endl;
     }
-    cout << "\033[40m";
+    cout << "\033[37m";
 }
 
 vector<vector<int>> generateMaze(int width, int height) {
@@ -35,10 +38,11 @@ vector<vector<int>> generateMaze(int width, int height) {
 
     int x = 0;
     int y = 0;
-    int step = 1001;
+    int maxsteps = (width+height)*5;
+    int step = maxsteps+1;
     int generated = 0;
 
-    while(step > (width+height)*5) {
+    while(step > maxsteps) {
 
         grid.clear();
 
@@ -49,12 +53,19 @@ vector<vector<int>> generateMaze(int width, int height) {
         for(int i = 0; i<height; i++) {
             grid.push_back(vector<int>()); // () creates a new empty vector object
             for(int j = 0; j<width; j++) {
-                grid[i].push_back(rand() % 2);
+                //grid[i].push_back(rand() % 2); // random 0 and 1
+                grid[i].push_back(1);
+                if(i % 2 != 0 && j % 2 != 0) {
+                    grid[i][j] = 2;
+                }
             }
         }
 
         while(x != width-1 || y != height-1) {
             int move = rand() % 4;
+
+            int xtemp = x;
+            int ytemp = y;
             
             if(move == 0) { // up
                 if(y != 0) {y--;}
@@ -68,9 +79,19 @@ vector<vector<int>> generateMaze(int width, int height) {
             if(move == 3) { // right
                 if(x != width-1) {x++;}
             }
-            grid[y][x] = 0;
 
+            if(grid[y][x] != 0 && grid[y][x] != 2) {
+                
+                grid[y][x] = 0;
+            }
+            else {
+                x = xtemp;
+                y = ytemp;
+            }
             step++;
+            if(step>maxsteps) {
+                break;
+            }
         }
         generated++;
     }
@@ -79,5 +100,5 @@ vector<vector<int>> generateMaze(int width, int height) {
 }
 
 int main() {
-    drawMaze(generateMaze(25,20));
+    drawMaze(generateMaze(21,15));
 }
