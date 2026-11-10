@@ -32,3 +32,6 @@ Then I had to generate the maze, which turned out to be more difficult than I in
 4. After that, I used a random number between 0 and 1 again for the empty cells to obscure the result.
 
 This can be used as a template, but many of these paths are inaccessible and consist only of isolated cells, so I need to find a way to connect multiple paths together.
+
+<img width="245" height="270" alt="image" src="https://github.com/user-attachments/assets/fda49d77-d82b-400b-a93e-a979b2639109" />
+<img width="245" height="270" alt="image" src="https://github.com/user-attachments/assets/8c391f16-baf6-48b6-b012-070a08d1e764" />
