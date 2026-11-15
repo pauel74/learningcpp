@@ -21,10 +21,10 @@ This program iterates through the attached two-dimensional vector and writes a b
 ```
 Then I had to generate the maze, which turned out to be more difficult than I initially thought.
 
-<img width="245" height="270" alt="image" src="https://github.com/user-attachments/assets/56a3f4c3-2145-40d1-a397-a58945819e3f" />
-<img width="245" height="270" alt="image" src="https://github.com/user-attachments/assets/b41024a3-c37c-4583-8bed-b73a23873e1d" />
-<img width="245" height="270" alt="image" src="https://github.com/user-attachments/assets/79ac4782-1c11-487c-9d72-151d78643b12" />
-<img width="245" height="270" alt="image" src="https://github.com/user-attachments/assets/c1a34602-190a-4ac3-af33-e1ed5d402ca3" />
+<img width="200" height="220" alt="image" src="https://github.com/user-attachments/assets/56a3f4c3-2145-40d1-a397-a58945819e3f" />
+<img width="200" height="220" alt="image" src="https://github.com/user-attachments/assets/b41024a3-c37c-4583-8bed-b73a23873e1d" />
+<img width="200" height="220" alt="image" src="https://github.com/user-attachments/assets/79ac4782-1c11-487c-9d72-151d78643b12" />
+<img width="200" height="220" alt="image" src="https://github.com/user-attachments/assets/c1a34602-190a-4ac3-af33-e1ed5d402ca3" />
 
 1. To test the `drawMaze()` function, I temporarily used a random number between 0 and 1 for each individual cell, however this usually makes the maze impossible to solve and would be dependent on chance.
 2. So I generated a random path that always contains empty cells and goes from the top left to the bottom right, but it usually takes too long and sometimes leaves not a single cell behind before it reaches its destination.
@@ -40,9 +40,9 @@ To make the paths clearer, I added invisible cells at regular intervals. I then 
 
 However, combined with a predetermined length and large fields, it took tens of thousands of attempts to find just one correct path, which is why I **rewrote the maze generation system**. Now the steps are stored in an array, and as soon as it gets stuck, it retraces those steps and tries again.
 
-<img width="300" height="320" alt="image" src="https://github.com/user-attachments/assets/bb82e0e4-84c5-4788-a909-78d6d56e8b7c" />
-<img width="300" height="320" alt="image" src="https://github.com/user-attachments/assets/55a014aa-8da3-4bce-8d7c-45b6e7422452" />
-<img width="300" height="320" alt="image" src="https://github.com/user-attachments/assets/9f6a5fa9-27f0-4f7a-8554-7c88de2ac930" />
+<img width="260" height="277" alt="image" src="https://github.com/user-attachments/assets/bb82e0e4-84c5-4788-a909-78d6d56e8b7c" />
+<img width="260" height="277" alt="image" src="https://github.com/user-attachments/assets/55a014aa-8da3-4bce-8d7c-45b6e7422452" />
+<img width="260" height="277" alt="image" src="https://github.com/user-attachments/assets/9f6a5fa9-27f0-4f7a-8554-7c88de2ac930" />
 
 #### How the new algorithm works
 
