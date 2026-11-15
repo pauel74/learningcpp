@@ -35,3 +35,7 @@ This can be used as a template, but many of these paths are inaccessible and con
 
 <img width="245" height="270" alt="image" src="https://github.com/user-attachments/assets/fda49d77-d82b-400b-a93e-a979b2639109" />
 <img width="245" height="270" alt="image" src="https://github.com/user-attachments/assets/8c391f16-baf6-48b6-b012-070a08d1e764" />
+
+To make the paths clearer, I added invisible cells at regular intervals. I then prevented the path from moving to squares that had already been visited or to the new invisible cells, which produces more plausible, correct paths. To prevent it from getting stuck, I terminated the path after too many steps and started a new one.
+
+However, combined with a predetermined length and large fields, it took tens of thousands of attempts to find just one correct path, which is why I **rewrote the maze generation system**. Now the steps are stored in an array, and as soon as it gets stuck, it retraces those steps and tries again.
