@@ -2,6 +2,8 @@
 #include <random>
 #include <cstdlib>
 #include <ctime>
+#include <thread>
+#include <chrono>
 using namespace std;
 
 struct Pos {
@@ -9,8 +11,8 @@ struct Pos {
 };
 
 void drawMaze(vector<vector<int>> grid) {
-    system("clear");
-    cout << "width: "<< grid[0].size() << "\nheight: " << grid.size() << endl;
+    cout << "\033[H"; // only moves the cursor back to the top-left corner
+    // cout << "width: "<< grid[0].size() << "\nheight: " << grid.size() << endl;
     for(int i = 0; i<grid.size(); i++) {
         for(int j = 0; j<grid[0].size(); j++) {
             int currentField = grid[i][j];
@@ -31,9 +33,17 @@ void drawMaze(vector<vector<int>> grid) {
             }
             cout << "██";
         }
-        cout << endl;
+        cout << "\n"; // endl also forces the text to be sent right to the terminal
     }
     cout << "\033[37m";
+}
+
+bool isStuck(vector<vector<int>> grid, int x, int y) {
+    if(y > 0 &&grid[y-1][x] == 1) return false;                      // up
+    if(x < int(grid[0].size())-1 && grid[y][x+1] == 1) return false; // right
+    if(y < int(grid.size())-1 && grid[y+1][x] == 1) return false;    // down
+    if(x > 0 && grid[y][x-1] == 1) return false;                     // left
+    return true;
 }
 
 vector<vector<int>> generateMaze(int width, int height) {
@@ -73,7 +83,7 @@ vector<vector<int>> generateMaze(int width, int height) {
     vector<Pos> steps;
     steps.push_back(pos);
 
-    for(int i = 0; i<1000; i++) {
+    while(true) {
 
         int dir = rand() % 4;
         
@@ -90,26 +100,36 @@ vector<vector<int>> generateMaze(int width, int height) {
         // check for invalid inputs
         if( x < 0 ||
             y < 0 ||
-            x >= int(grid.size()) ||
-            y >= int(grid[0].size()) ||
+            x >= int(grid[0].size()) ||
+            y >= int(grid.size()) ||
             grid[y][x] != 1
         ) {
             steps.pop_back();
         }
-
+        
         y = steps[steps.size()-1].y;
         x = steps[steps.size()-1].x;
+        
+        while(isStuck(grid, x, y) == true) {
+            steps.pop_back();
+            grid[y][x] = 2;
+            y = steps[steps.size()-1].y;
+            x = steps[steps.size()-1].x;
+        }
 
-        grid[y][x] = 0;
-
+        grid[y][x] = 0; // sets type 0 on grid
+        
         if(x == grid[0].size()-1 && y == grid.size()-1) {
             break;
         }
+        
+        this_thread::sleep_for(chrono::milliseconds(4));
+        drawMaze(grid);
     }
     return grid;
 }
 
 int main() {
     cout << "generating..." << endl;
-    drawMaze(generateMaze(25,20));
+    drawMaze(generateMaze(40,40));
 }
