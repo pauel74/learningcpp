@@ -39,3 +39,17 @@ This can be used as a template, but many of these paths are inaccessible and con
 To make the paths clearer, I added invisible cells at regular intervals. I then prevented the path from moving to squares that had already been visited or to the new invisible cells, which produces more plausible, correct paths. To prevent it from getting stuck, I terminated the path after too many steps and started a new one.
 
 However, combined with a predetermined length and large fields, it took tens of thousands of attempts to find just one correct path, which is why I **rewrote the maze generation system**. Now the steps are stored in an array, and as soon as it gets stuck, it retraces those steps and tries again.
+
+<img width="300" height="320" alt="image" src="https://github.com/user-attachments/assets/bb82e0e4-84c5-4788-a909-78d6d56e8b7c" />
+<img width="300" height="320" alt="image" src="https://github.com/user-attachments/assets/55a014aa-8da3-4bce-8d7c-45b6e7422452" />
+<img width="300" height="320" alt="image" src="https://github.com/user-attachments/assets/9f6a5fa9-27f0-4f7a-8554-7c88de2ac930" />
+
+#### How the new algorithm works
+
+The path moves randomly and stores every step in an array. When it gets stuck, it turns the dead end into a wall and walks back along its steps until it finds a free cell, then continues from there. This repeats until it reaches the bottom right.
+| | Old | New |
+|---|---|---|
+| When stuck | Restart with a new grid | Walk back along the steps |
+| Memory | None | Steps stored in an array |
+| Dead ends | Stay as path | Become walls |
+| Attempts | Tens of thousands (depending on size) | One run |
