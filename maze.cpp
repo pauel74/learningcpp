@@ -10,7 +10,7 @@ struct Pos {
     int x = 0, y = 0;
 };
 
-void drawMaze(vector<vector<int>> grid) {
+void drawMaze(vector<vector<int>> grid  ) {
     cout << "\033[H"; // only moves the cursor back to the top-left corner
     // cout << "width: "<< grid[0].size() << "\nheight: " << grid.size() << endl;
     for(int i = 0; i<grid.size(); i++) {
@@ -30,6 +30,9 @@ void drawMaze(vector<vector<int>> grid) {
             }
             else if(currentField == 2) { // blocking cells
                 cout << "\033[36m";
+            }
+            else if(currentField == 3) { // path blocking cells
+                cout << "\033[31m";
             }
             cout << "██";
         }
@@ -112,7 +115,7 @@ vector<vector<int>> generateMaze(int width, int height) {
         
         while(isStuck(grid, x, y) == true) {
             steps.pop_back();
-            grid[y][x] = 2;
+            grid[y][x] = 3;
             y = steps[steps.size()-1].y;
             x = steps[steps.size()-1].x;
         }
@@ -123,13 +126,24 @@ vector<vector<int>> generateMaze(int width, int height) {
             break;
         }
         
-        this_thread::sleep_for(chrono::milliseconds(4));
-        drawMaze(grid);
+
+        // drawMaze(grid); live preview
+        //this_thread::sleep_for(chrono::milliseconds(10)); // to slow it down
     }
+
+    // check for empty grids parts
+    for(int i = 0; i<height; i++) {
+        for(int j = 0; j<width; j++) {
+            if(grid[i][j] == 3) {
+                grid[i][j] = 1;
+            }
+        }
+    }
+
     return grid;
 }
 
 int main() {
     cout << "generating..." << endl;
-    drawMaze(generateMaze(40,40));
+    drawMaze(generateMaze(30,30));
 }
