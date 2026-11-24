@@ -127,8 +127,8 @@ vector<vector<int>> generateMaze(int width, int height) {
         }
         
 
-        // drawMaze(grid); live preview
-        //this_thread::sleep_for(chrono::milliseconds(10)); // to slow it down
+        drawMaze(grid);
+        this_thread::sleep_for(chrono::milliseconds(1)); // to slow it down
     }
 
     // check for empty grids parts
@@ -139,6 +139,63 @@ vector<vector<int>> generateMaze(int width, int height) {
             }
         }
     }
+
+    // add paths where there are none
+    bool changed = true;
+    while(changed == true) {
+        changed = false;
+
+        for(int i = 0; i<height; i++) {
+            for(int j = 0; j<width; j++) {
+
+                // wall cell with a room on the left and on the right
+                if(i % 2 == 0 && j % 2 != 0 && grid[i][j] == 1) {
+                    int left = grid[i][j-1];
+                    int right = grid[i][j+1];
+
+                    // one side is a path, the other side is not visited yet
+                    if((left == 0 && right == 1) || (left == 1 && right == 0)) {
+                        changed = true;
+                        if(rand() % 2 == 0) {
+                            grid[i][j-1] = 0;
+                            grid[i][j] = 0;
+                            grid[i][j+1] = 0;
+                        }
+                        drawMaze(grid);
+                        this_thread::sleep_for(chrono::milliseconds(5)); // to slow it down
+                    }
+                }
+
+                // wall cell with a room above and below
+                if(i % 2 != 0 && j % 2 == 0 && grid[i][j] == 1) {
+                    int up = grid[i-1][j];
+                    int down = grid[i+1][j];
+
+                    // one side is a path, the other side is not visited yet
+                    if((up == 0 && down == 1) || (up == 1 && down == 0)) {
+                        changed = true;
+                        if(rand() % 2 == 0) {
+                            grid[i-1][j] = 0;
+                            grid[i][j] = 0;
+                            grid[i+1][j] = 0;
+                        }
+                        drawMaze(grid);
+                        this_thread::sleep_for(chrono::milliseconds(5)); // to slow it down
+                    }
+                }
+            }
+        }
+    }
+
+    // remove temp blocks
+    for(int i = 0; i<height; i++) {
+        for(int j = 0; j<width; j++) {
+            if(grid[i][j] == 2) {
+                grid[i][j] = 1;
+            }
+        }
+    }
+
 
     return grid;
 }
