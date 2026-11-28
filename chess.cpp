@@ -67,7 +67,7 @@ void drawBoard(vector<vector<Field>> board) {
     cout << " " << line;
 
     if(line == 0) {
-      cout << "\tHistory:";
+      cout << "\tHISTORY:";
     }
     if(line > 0) {
       cout << "\t...";
@@ -117,7 +117,95 @@ vector<vector<Field>> generateBoard() {
   return board;
 }
 
+vector<vector<Field>> addPieces(vector<vector<Field>> board) {
+
+  for(int line = 0; line < board.size(); line++) {
+    for(int column = 0; column < board[0].size(); column++) {
+      // black pieces
+
+        if(line == 0) {
+          // rooks
+          if(column == 0 || column == 7) 
+            board[line][column].piece.type = 'r';
+            board[line][column].piece.isWhite = false;
+          // knight
+          if(column == 1 || column == 6) 
+            board[line][column].piece.type = 'n';
+            board[line][column].piece.isWhite = false;
+          // bishops
+          if(column == 2 || column == 5) 
+            board[line][column].piece.type = 'b';
+            board[line][column].piece.isWhite = false;
+          // queen
+          if(column == 3) {
+            board[line][column].piece.type = 'q';
+            board[line][column].piece.isWhite = false; 
+          }
+          // king
+          if(column == 4) {
+            board[line][column].piece.type = 'k';
+            board[line][column].piece.isWhite = false; 
+          }
+        }
+
+        // pawns
+        if(line == 1) {
+          board[line][column].piece.type = 'p';
+          board[line][column].piece.isWhite = false;
+        }
+
+      // white pieces
+
+        if(line == 7) {
+          // rooks
+          if(column == 0 || column == 7) 
+            board[line][column].piece.type = 'r';
+            board[line][column].piece.isWhite = true;
+          // knight
+          if(column == 1 || column == 6) 
+            board[line][column].piece.type = 'n';
+            board[line][column].piece.isWhite = true;
+          // bishops
+          if(column == 2 || column == 5) 
+            board[line][column].piece.type = 'b';
+            board[line][column].piece.isWhite = true;
+          // queen
+          if(column == 3) {
+            board[line][column].piece.type = 'q';
+            board[line][column].piece.isWhite = true; 
+          }
+          // king
+          if(column == 4) {
+            board[line][column].piece.type = 'k';
+            board[line][column].piece.isWhite = true; 
+          }
+        }
+
+        // pawns
+        if(line == 6) {
+          board[line][column].piece.type = 'p';
+          board[line][column].piece.isWhite = true;
+      }
+    }
+  }
+  return board;
+}
+
+void gameLoop(vector<vector<Field>> board) {
+  string userInput;
+  while(true) {
+    // draw
+    drawBoard(board);
+    // user input
+    cout << "\nyour turn: ";
+    getline(cin,userInput);
+      // check
+
+        // place
+  }
+}
+
 int main() {
-  drawBoard(generateBoard());
+  gameLoop(addPieces(generateBoard()));
   return 0;
 }
