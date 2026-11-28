@@ -12,7 +12,7 @@ const string cWhitePiece = "\033[37m";
 
 struct Piece {
   bool isWhite;
-  char type;
+  char type = 'x';
 };
 
 struct Field {
@@ -24,10 +24,10 @@ void drawBoard(vector<vector<Field>> board) {
 
   system("clear");
 
-  cout << "  a  b  c  d  e  f  g  h" << endl;
+  cout << "   a  b  c  d  e  f  g  h" << endl;
 
   for(int line = 0; line < board.size(); line++) {
-    cout << line << " ";
+    cout << line+1 << " ";
     for(int column = 0; column < board[0].size(); column++) {
 
       // bg color
@@ -64,7 +64,7 @@ void drawBoard(vector<vector<Field>> board) {
       cout << " " << cReset;
 
     }
-    cout << " " << line;
+    cout << " " << line+1;
 
     if(line == 0) {
       cout << "\tHISTORY:";
@@ -117,7 +117,40 @@ vector<vector<Field>> generateBoard() {
   return board;
 }
 
-vector<vector<Field>> addPieces(vector<vector<Field>> board) {
+vector<vector<Field>> movePiece(vector<vector<Field>> board, int fromLine, int fromColumn, int toLine, int toColumn) {
+
+  if(board[fromLine][toColumn].piece.type == 'x') {return board;} // moving empty field 
+
+  board[toLine][toColumn].piece = board[fromLine][fromColumn].piece;
+  board[fromLine][fromColumn].piece.type = 'x';
+  return board;
+}
+
+vector<vector<Field>> inputHandling(vector<vector<Field>> board) {
+
+  // get user input
+  string userInput;
+  vector<int> moves;
+  cout << "\nyour turn: ";
+  getline(cin,userInput);
+
+  // convert user input into ints
+  for(char c : userInput) {
+    if(c >= '1' && c <= '8') {moves.push_back(int(c)-49);} // converts to line
+    if(c >= 'a' && c <= 'h') {moves.push_back(int(c)-97);} // converts to column
+  }
+
+  if(moves.size() == 2) { // move to
+    
+  }
+  else if(moves.size() == 4) { // move from to 
+    board = movePiece(board, moves[1], moves[0], moves[3], moves[2]); // a2a3 column line -> column line (1032)
+  }
+
+  return board;
+}
+
+vector<vector<Field>> addPieces(vector<vector<Field>> board) { // will clean this up later
 
   for(int line = 0; line < board.size(); line++) {
     for(int column = 0; column < board[0].size(); column++) {
@@ -192,16 +225,9 @@ vector<vector<Field>> addPieces(vector<vector<Field>> board) {
 }
 
 void gameLoop(vector<vector<Field>> board) {
-  string userInput;
   while(true) {
-    // draw
     drawBoard(board);
-    // user input
-    cout << "\nyour turn: ";
-    getline(cin,userInput);
-      // check
-
-        // place
+    board = inputHandling(board);
   }
 }
 
